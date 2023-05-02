@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.ds.moon.dsproject.dto.UserHbDto;
 import com.ds.moon.dsproject.entity.UserHb;
 import com.ds.moon.dsproject.repository.UserHbRepository;
 
@@ -22,13 +23,35 @@ public class UserHbService {
 
         return userHbRepository.findAll();
     }
-    public void delete(UserHb userHb){
+
+    public UserHb userHbdata(UserHbDto userHbDto) {
+        // 잘라서 넣기
+
+        userHbDto.setUserId(userHbDto.getUserId());
+        userHbDto.setUserHbCd(userHbDto.getUserHbCd());
+        UserHb userHb = UserHb.createUserHb(userHbDto);
+
+        return userHb;
+    }
+
+    public void delete(UserHb userHb) {
         userHbRepository.deleteByUserUserId(userHb.getUser().getUserId());
     }
 
+    public void saveUserHb(UserHbDto userHbDto) {
+        UserHb userHb = userHbdata(userHbDto);
+        delete(userHb);
+        if (userHbDto.getUserHbCd() != null) {
+            String[] hbList = userHbDto.getUserHbCd().split(",");
 
-    public void saveUserHb(UserHb userHb) {
-        userHbRepository.save(userHb);
+            for (int i = 0; i < hbList.length; i++) {
+                userHb.getHb().setHbCd(hbList[i]);// 취미 코드 넣기
+                userHb.getUser().setUserId(userHbDto.getUserId());// 유저아이디 넣기
+
+                userHbRepository.save(userHb);
+            }
+        }
+
     }
 
     public List<UserHb> selectUserIdByHb(String userId) {
