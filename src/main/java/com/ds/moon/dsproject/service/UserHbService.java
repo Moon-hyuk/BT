@@ -25,8 +25,6 @@ public class UserHbService {
     }
 
     public UserHb userHbdata(UserHbDto userHbDto) {
-        // 잘라서 넣기
-
         userHbDto.setUserId(userHbDto.getUserId());
         userHbDto.setUserHbCd(userHbDto.getUserHbCd());
         UserHb userHb = UserHb.createUserHb(userHbDto);
@@ -34,13 +32,13 @@ public class UserHbService {
         return userHb;
     }
 
-    public void delete(UserHb userHb) {
-        userHbRepository.deleteByUserUserId(userHb.getUser().getUserId());
+    public void delete(String userId) {
+        userHbRepository.deleteByUserUserId(userId);
     }
 
     public void saveUserHb(UserHbDto userHbDto) {
         UserHb userHb = userHbdata(userHbDto);
-        delete(userHb);
+        delete(userHb.getUser().getUserId());
         if (userHbDto.getUserHbCd() != null) {
             String[] hbList = userHbDto.getUserHbCd().split(",");
 
@@ -54,8 +52,17 @@ public class UserHbService {
 
     }
 
-    public List<UserHb> selectUserIdByHb(String userId) {
-        return userHbRepository.findAllByUserUserId(userId);
+    public String selectUserIdByHb(String userId) {
+        String hbList = "";
+        List<UserHb> userHbList =  userHbRepository.findAllByUserUserId(userId);
+		if (userId != null) {
+			for (int i = 0; i < userHbList.size(); i++) {
+				hbList += userHbList.get(i).getHb().getHbCd();
+			}
+		}
+
+
+        return hbList;
     }
 
 }

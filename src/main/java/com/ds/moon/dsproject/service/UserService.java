@@ -1,6 +1,5 @@
 package com.ds.moon.dsproject.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -30,12 +29,6 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    private void validateDuplicateMember(User user) {
-        User findUser = userRepository.findByuserId(user.getUserId());
-        if (findUser != null) {
-            throw new IllegalStateException("이미 가입된 회원입니다.");
-        }
-    }
 
     // 사원 리스트
     public List<User> getListUser(String searchKeyword) {

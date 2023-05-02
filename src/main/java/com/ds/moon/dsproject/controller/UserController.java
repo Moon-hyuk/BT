@@ -4,16 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.ds.moon.dsproject.dto.HbDto;
 import com.ds.moon.dsproject.dto.UserDto;
 import com.ds.moon.dsproject.dto.UserHbDto;
 import com.ds.moon.dsproject.entity.Dept;
 import com.ds.moon.dsproject.entity.Hb;
 import com.ds.moon.dsproject.entity.User;
-import com.ds.moon.dsproject.entity.UserHb;
 import com.ds.moon.dsproject.service.UserService;
 import com.ds.moon.dsproject.service.DeptService;
 import com.ds.moon.dsproject.service.HbService;
@@ -49,11 +46,6 @@ public class UserController {
 		return Hbtlist;
 	}
 
-	@GetMapping("/hello")
-	public String hello() {
-		return "test123";
-	}
-
 	@GetMapping(value = "/index")
 	public String index() {
 		return "/index";
@@ -77,86 +69,40 @@ public class UserController {
 
 	@GetMapping(value = "/list")
 	public List<User> UserList(String searchKeyword) {
+		System.out.println("검색어검색어검색어검색어검색어검색어검색어" + searchKeyword);
 		return userService.getListUser(searchKeyword);
 	}
 
 	@GetMapping(value = "/info")
-	public User UserInfo(String userId){
+	public User UserInfo(String userId) {
+
+		System.out.println("유저아이디유저아이디유저아이디유저아이디유저아이디유저아이디" + userId);
+
 		return userService.getUserInfo(userId);
 	}
-	// list
-	// List<User> userlist = userService.getListUser();
-	// List<Dept> deptlist = deptService.getListDept();
-	// List<Hb> hblist = hbService.getListHb();
-	// List<UserHb> userHblist = userHbService.getList();
 
-	// User user = new User();
-	// // System.out.println("우ㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜ"+userId);
-	// // System.out.println("우ㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜㅜ"+searchKeyword);
-	// //검색
-	// if (searchKeyword == null) {
-	// userlist = userService.getListUser();
-	// if (userId == null) {
-	// userId = "";
-	// } else {
-	// user = userService.getUserInfo(userId);
-	// }
-	// } else {
-	// userlist = userService.getListUserNm(searchKeyword);
-	// if (userId == null) {
-	// userId = "";
-	// } else {
-	// user = userService.getUserInfo(userId);
-	// }
-	// }
-	// //취미serchuserhblist
-	// if(userId!=null){
-	// List<UserHb> searchUserHbList = userHbService.selectUserIdByHb(userId);
-	// model.addAttribute("serchuserhblist", searchUserHbList);
-	// String hbList ="";
-	// // userHbService.deleteUserHb(userId);
+	@GetMapping(value = "/userhblist")
+	public String UserHbList(String userId) {
+		String hbList = userHbService.selectUserIdByHb(userId);
+		System.out.println("유저어어어허비선택목록!!!!!!!" + hbList);
 
-	// for(int i=0; i<searchUserHbList.size(); i++){
-	// hbList += searchUserHbList.get(i).getHb().getHbCd();
-	// }
-	// model.addAttribute("hbList", hbList);
-	// }
+		return hbList;
+	}
 
-	// model.addAttribute("userhb", userHblist);
-	// model.addAttribute("userinfo", user);
-	// model.addAttribute("deptlist", deptlist);
-	// model.addAttribute("hblist", hblist);
-	// model.addAttribute("userlist", userlist);
+	@PostMapping(value = "/hb/delete")
+	public ResponseEntity<UserHbDto> hb_delete_proc(@RequestBody UserHbDto userHbDto) {
+		userHbService.delete(userHbDto.getUserId());
 
-	// return "userlist";
-	// }
+		return ResponseEntity.ok(userHbDto);
+	}
 
-	// @GetMapping(value = "/sign")
-	// public String UserSign(Model model) {
-	// List<Dept> deptlist = deptService.getListDept();
-	// List<Hb> hblist = hbService.getListHb();
-	// model.addAttribute("deptlist", deptlist);
-	// model.addAttribute("hblist", hblist);
-	// return "usersign";
-	// }
+	@PostMapping(value = "/user/delete")
+	public ResponseEntity<User> user_delete_proc(@RequestBody UserDto userDto) {
+		User user = User.createUser(userDto);
 
-	// @PostMapping(value ="/user/delete")
-	// public String user_delete_proc(User user, UserHb userHb){
-	// userHb.setUser(user);
-	// System.out.println("삭제"+userHb);
-	// userHbService.delete(userHb);
+		userService.deleteUserId(user);
 
-	// userService.deleteUserId(user);
-
-	// return "redirect:/list";
-	// }
-
-	// @PostMapping(value ="/user/modify")
-	// public String user_modify_proc(UserDto userDto){
-	// User user = User.createUser(userDto);
-	// userService.saveUser(user);
-
-	// return "redirect:/list";
-	// }
+		return ResponseEntity.ok(user);
+	}
 
 }

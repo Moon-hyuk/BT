@@ -44,7 +44,6 @@ public class User {
     public static User createUser(UserDto userDto) {
         User user = new User();
         Dept dept = new Dept();
-        UserHb userHb = new UserHb();
         dept.setDeptCd(userDto.getDeptCd());
         user.setUserId(userDto.getUserId());
         user.setUserNm(userDto.getUserNm());
