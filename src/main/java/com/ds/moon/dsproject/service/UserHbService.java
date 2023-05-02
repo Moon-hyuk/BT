@@ -24,6 +24,7 @@ public class UserHbService {
         return userHbRepository.findAll();
     }
 
+    //취미 저장 변환
     public UserHb userHbdata(UserHbDto userHbDto) {
         userHbDto.setUserId(userHbDto.getUserId());
         userHbDto.setUserHbCd(userHbDto.getUserHbCd());
@@ -32,10 +33,12 @@ public class UserHbService {
         return userHb;
     }
 
+    //취미 삭제
     public void delete(String userId) {
         userHbRepository.deleteByUserUserId(userId);
     }
 
+    //취미 저장
     public void saveUserHb(UserHbDto userHbDto) {
         UserHb userHb = userHbdata(userHbDto);
         delete(userHb.getUser().getUserId());
@@ -52,6 +55,7 @@ public class UserHbService {
 
     }
 
+    //회원별 취미목록
     public String selectUserIdByHb(String userId) {
         String hbList = "";
         List<UserHb> userHbList =  userHbRepository.findAllByUserUserId(userId);
@@ -60,8 +64,6 @@ public class UserHbService {
 				hbList += userHbList.get(i).getHb().getHbCd();
 			}
 		}
-
-
         return hbList;
     }
 

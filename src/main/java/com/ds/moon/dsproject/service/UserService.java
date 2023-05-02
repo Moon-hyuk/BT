@@ -24,21 +24,16 @@ public class UserService {
         userRepository.save(user);
 
     }
-
-    public User modifyUser(User user) {
-        return userRepository.save(user);
-    }
-
-
+    
     // 사원 리스트
     public List<User> getListUser(String searchKeyword) {
-        if(searchKeyword != null){
+        // if(searchKeyword != null){
             return userRepository.findByUserNmContaining(searchKeyword);
-        }
-        return userRepository.findAll();
+        // }
+        // return userRepository.findAll();
     }
 
-    // 사원
+    // 사원 정보출력
     public User getUserInfo(String userId) {
         return userRepository.findByuserId(userId);
 
