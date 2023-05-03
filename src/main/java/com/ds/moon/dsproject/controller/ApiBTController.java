@@ -72,13 +72,14 @@ public class ApiBTController {
 		return userService.getListUser(searchKeyword);
 	}
 
+	//회원별 정보 출력
 	@GetMapping(value = "/info")
 	public User UserInfo(String userId) {
 
 
 		return userService.getUserInfo(userId);
 	}
-
+	//회원별 취미 출력
 	@GetMapping(value = "/userhblist")
 	public String UserHbList(String userId) {
 		String hbList = userHbService.selectUserIdByHb(userId);
@@ -86,6 +87,7 @@ public class ApiBTController {
 		return hbList;
 	}
 
+	//취미 삭제
 	@PostMapping(value = "/hb/delete")
 	public ResponseEntity<UserHbDto> hb_delete_proc(@RequestBody UserHbDto userHbDto) {
 		userHbService.delete(userHbDto.getUserId());
@@ -93,6 +95,7 @@ public class ApiBTController {
 		return ResponseEntity.ok(userHbDto);
 	}
 
+	//회원 삭제
 	@PostMapping(value = "/user/delete")
 	public ResponseEntity<User> user_delete_proc(@RequestBody UserDto userDto) {
 		User user = User.createUser(userDto);

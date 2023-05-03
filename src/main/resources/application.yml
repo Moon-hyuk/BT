@@ -12,8 +12,8 @@ spring:
   # Database
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/test
-    username: test
+    url: jdbc:postgresql://34.22.67.115:5432/postgres
+    username: postgres
     password: 1234
   # jpa properties
   # SQL문 정렬하여 출력 
